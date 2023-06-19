@@ -58,9 +58,9 @@ KeyPair 的公私钥对象, 基本信息举例(Hex 编码后输出):
 - 同秘钥对生成一样, 分为两种情况转换
 - 当和其他平台交互公钥时,接收到的一般是编码后的字符串,需要转换为本地对象进行后续逻辑处理(例如 秘钥协商)
 
-[KeyPair 类型的转换: keyPairChangeDemo](src/main/java/Demo.java)
+[keyPairChangeDemo](src/main/java/Demo.java)
 
-[AsymmetricCipherKeyPair 类型的转换: AsymmetricCipherKeyPairChangeDemo](src/main/java/Demo.java)
+[AsymmetricCipherKeyPairChangeDemo](src/main/java/Demo.java)
 
 
 ## ECDH 秘钥协商
@@ -69,7 +69,7 @@ KeyPair 的公私钥对象, 基本信息举例(Hex 编码后输出):
 
 服务端公钥的正确性,需要通过 CA 认证来保证. 
 
-本章节基于前面的 SM2 秘钥对生成, 模拟了秘钥协商过程.
+本章节基于前面的 SM2 秘钥对生成, 模拟了秘钥协商过程(不包含 CA 认证).
 
 
 [KeyPairECDHDemo](src/main/java/Demo.java)
@@ -77,9 +77,7 @@ KeyPair 的公私钥对象, 基本信息举例(Hex 编码后输出):
 [AsymmetricCipherKeyPairECDHDemo](src/main/java/Demo.java)
 
 
-
 # 待办
 
-- ecdh 秘钥协商
 - sm4 加解密
 
