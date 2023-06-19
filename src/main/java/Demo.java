@@ -12,8 +12,11 @@ public class Demo {
 
     public static void main(String[] args) {
 //        keyPairDemo();
-        AsymmetricCipherKeyPairDemo();
+//        AsymmetricCipherKeyPairDemo();
+//        keyPairChangeDemo();
+        AsymmetricCipherKeyPairChangeDemo();
     }
+
 
     private static void keyPairDemo() {
         KeyPair kp = SM2Util.createKeyPair();
@@ -36,4 +39,42 @@ public class Demo {
         System.out.println("私钥 bigint " + privateKey.getD());
         System.out.println("私钥 16 进制 " + privateKey.getD().toString(16));
     }
+
+    /**
+     * 测试 byte[] 转换为公私钥的正确性
+     */
+    private static void keyPairChangeDemo() {
+        KeyPair kp = SM2Util.createKeyPair();
+        PublicKey publicKey = kp.getPublic();
+        PrivateKey privateKey = kp.getPrivate();
+        System.out.println("公钥 Hex " + HexUtil.encodeHex(publicKey.getEncoded()));
+        System.out.println("私钥 Hex " + HexUtil.encodeHex(privateKey.getEncoded()));
+
+        PublicKey publicKey2 = SM2Util.changeBytes2PublicKey(publicKey.getEncoded());
+        System.out.println("公钥2 Hex " + HexUtil.encodeHex(publicKey2.getEncoded()));
+
+        PrivateKey privateKey2 = SM2Util.changeBytes2PrivateKey(privateKey.getEncoded());
+        System.out.println("私钥 Hex " + HexUtil.encodeHex(privateKey2.getEncoded()));
+
+    }
+
+    private static void AsymmetricCipherKeyPairChangeDemo() {
+        AsymmetricCipherKeyPair keyPair = SM2Util.createAsymmetricCipherKeyPair();
+        // 获取公钥和私钥
+        ECPublicKeyParameters publicKey = (ECPublicKeyParameters) keyPair.getPublic();
+        ECPrivateKeyParameters privateKey = (ECPrivateKeyParameters) keyPair.getPrivate();
+
+        String publicHex = HexUtil.encodeHex(publicKey.getQ().getEncoded(false));
+
+        ECPublicKeyParameters publicKey2 = SM2Util.getPublicKey(publicHex);
+        System.out.println("公钥 Hex " + publicHex);
+        System.out.println("公钥2 Hex " + HexUtil.encodeHex(publicKey2.getQ().getEncoded(false)));
+
+        String privateHex = privateKey.getD().toString(16);
+        ECPrivateKeyParameters privateKey2 = SM2Util.getPrivateKey(privateHex);
+        System.out.println("私钥 Hex "+privateHex);
+        System.out.println("私钥2 Hex "+privateKey2.getD().toString(16));
+    }
+
+
 }

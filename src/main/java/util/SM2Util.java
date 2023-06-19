@@ -6,13 +6,19 @@ import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.generators.ECKeyPairGenerator;
 import org.bouncycastle.crypto.params.ECDomainParameters;
 import org.bouncycastle.crypto.params.ECKeyGenerationParameters;
+import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
+import org.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.math.ec.ECCurve;
+import org.bouncycastle.math.ec.ECPoint;
+import org.bouncycastle.util.encoders.Base64;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.SecureRandom;
-import java.security.Security;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
 public class SM2Util {
 
@@ -57,6 +63,68 @@ public class SM2Util {
     }
 
 
+    /**
+     * 转换字节数组为公钥对象
+     * 注意: 针对 x059 格式的公钥
+     */
+    public static PublicKey changeBytes2PublicKey(byte[] bytes) {
+        try {
+            KeyFactory keyFactory = KeyFactory.getInstance("EC", PROVIDER);
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(bytes);
+            PublicKey publicKey = keyFactory.generatePublic(keySpec);
+            return publicKey;
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
 
+    /**
+     * 转换字节数组为私钥对象
+     * 注意: 针对 pkcs8 格式的公钥
+     */
+    public static PrivateKey changeBytes2PrivateKey(byte[] bytes) {
+        try {
+            KeyFactory keyFactory = KeyFactory.getInstance("EC", PROVIDER);
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(bytes);
+            PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+            return privateKey;
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
+
+    /**
+     * 获取公钥对象
+     *
+     * @param publicKeyString: 公钥 Hex 编码字符串, 04 开头的非压缩格式
+     * @return 公钥对象
+     */
+    public static ECPublicKeyParameters getPublicKey(String publicKeyString) {
+        // 去掉 04 开头, 取出公钥的 x y 坐标.
+        String keyContent = publicKeyString.substring(2);
+        String xHex = keyContent.substring(0, keyContent.length() / 2);
+        BigInteger x = new BigInteger(xHex, 16);
+        String yHex = keyContent.substring(keyContent.length() / 2);
+        BigInteger y = new BigInteger(yHex, 16);
+
+        //构造domain参数 + 构造 ECCurve对象
+        X9ECParameters sm2ECParameters = GMNamedCurves.getByName("sm2p256v1");
+        ECDomainParameters domainParameters = new ECDomainParameters(sm2ECParameters);
+        ECCurve curve = sm2ECParameters.getCurve();
+
+        // 使用 curve 和公钥点坐标构造 ECPublicKeyParameters 对象
+        ECPoint q = curve.createPoint(x, y);
+        ECPublicKeyParameters publicKey = new ECPublicKeyParameters(q, domainParameters);
+        return publicKey;
+    }
+
+
+    public static ECPrivateKeyParameters getPrivateKey(String privateKeyString) {
+        X9ECParameters sm2ECParameters = GMNamedCurves.getByName("sm2p256v1");
+        ECDomainParameters domainParameters = new ECDomainParameters(sm2ECParameters);
+        BigInteger bigInteger = new BigInteger(privateKeyString, 16);
+        ECPrivateKeyParameters privateKey = new ECPrivateKeyParameters(bigInteger, domainParameters);
+        return privateKey;
+    }
 
 }

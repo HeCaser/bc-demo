@@ -53,6 +53,15 @@ KeyPair 的公私钥对象, 基本信息举例(Hex 编码后输出):
 <img src='img/img_sm2_keypair.png'>
 
 ## byte[] 转为公私钥对象
+>  本章介绍把 byte[] 转换为公私钥对象的方法. 
+
+- 同秘钥对生成一样, 分为两种情况转换
+- 当和其他平台交互公钥时,接收到的一般是编码后的字符串,需要转换为本地对象进行后续逻辑处理(例如 秘钥协商)
+
+[KeyPair 类型的转换: keyPairChangeDemo](src/main/java/Demo.java)
+
+[AsymmetricCipherKeyPair 类型的转换: AsymmetricCipherKeyPairChangeDemo](src/main/java/Demo.java)
+
 
 
 # 待办
