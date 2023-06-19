@@ -1,0 +1,8 @@
+# Default ignored files
+.idea/
+.DS_Store
+/build
+build/
+.gradle/
+/.idea/
+/.gradle/
