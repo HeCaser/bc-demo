@@ -52,8 +52,8 @@ KeyPair 的公私钥对象, 基本信息举例(Hex 编码后输出):
 
 <img src='img/img_sm2_keypair.png'>
 
-## byte[] 转为公私钥对象
->  本章介绍把 byte[] 转换为公私钥对象的方法. 
+## 数据源转为公私钥对象
+>  本章介绍把 数据源 转换为公私钥对象的方法. 数据源通常是 byte[] 或者 Hex 字符串
 
 - 同秘钥对生成一样, 分为两种情况转换
 - 当和其他平台交互公钥时,接收到的一般是编码后的字符串,需要转换为本地对象进行后续逻辑处理(例如 秘钥协商)
@@ -63,9 +63,23 @@ KeyPair 的公私钥对象, 基本信息举例(Hex 编码后输出):
 [AsymmetricCipherKeyPair 类型的转换: AsymmetricCipherKeyPairChangeDemo](src/main/java/Demo.java)
 
 
+## ECDH 秘钥协商
+
+利用本地私钥和服务端公钥, 可以协商出新的秘钥, 只要两端算法相同,可以保证协商出的秘钥是相同的, 这样可以避免网络传输造成的风险.
+
+服务端公钥的正确性,需要通过 CA 认证来保证. 
+
+本章节基于前面的 SM2 秘钥对生成, 模拟了秘钥协商过程.
+
+
+[KeyPairECDHDemo](src/main/java/Demo.java)
+
+[AsymmetricCipherKeyPairECDHDemo](src/main/java/Demo.java)
+
+
 
 # 待办
-- byte[] 转秘钥对象
+
 - ecdh 秘钥协商
 - sm4 加解密
 

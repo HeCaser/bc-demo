@@ -1,6 +1,7 @@
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
 import org.bouncycastle.crypto.params.ECPublicKeyParameters;
+import util.ECDHUtil;
 import util.HexUtil;
 import util.SM2Util;
 
@@ -14,7 +15,9 @@ public class Demo {
 //        keyPairDemo();
 //        AsymmetricCipherKeyPairDemo();
 //        keyPairChangeDemo();
-        AsymmetricCipherKeyPairChangeDemo();
+//        AsymmetricCipherKeyPairChangeDemo();
+//        KeyPairECDHDemo();
+        AsymmetricCipherKeyPairECDHDemo();
     }
 
 
@@ -72,9 +75,52 @@ public class Demo {
 
         String privateHex = privateKey.getD().toString(16);
         ECPrivateKeyParameters privateKey2 = SM2Util.getPrivateKey(privateHex);
-        System.out.println("私钥 Hex "+privateHex);
-        System.out.println("私钥2 Hex "+privateKey2.getD().toString(16));
+        System.out.println("私钥 Hex " + privateHex);
+        System.out.println("私钥2 Hex " + privateKey2.getD().toString(16));
     }
+
+
+    private static void KeyPairECDHDemo() {
+        try {
+            KeyPair localKeyPair = SM2Util.createKeyPair();
+            // 模拟服务端秘钥
+            KeyPair serverKeyPair = SM2Util.createKeyPair();
+            // 本地私钥 + 服务端公钥
+            byte[] keyByte = ECDHUtil.ECDH(SM2Util.changeBytes2PublicKey(serverKeyPair.getPublic().getEncoded()), localKeyPair.getPrivate());
+            // 本地公钥 + 服务端私钥: 模拟服务端协商结果
+            byte[] keyByte2 = ECDHUtil.ECDH(SM2Util.changeBytes2PublicKey(localKeyPair.getPublic().getEncoded()), serverKeyPair.getPrivate());
+
+            System.out.println("ECHD = " + HexUtil.encodeHex(keyByte));
+            System.out.println("ECHD2 = " + HexUtil.encodeHex(keyByte2));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void  AsymmetricCipherKeyPairECDHDemo() {
+        try {
+            AsymmetricCipherKeyPair localKeyPair = SM2Util.createAsymmetricCipherKeyPair();
+            ECPublicKeyParameters publicKey = (ECPublicKeyParameters) localKeyPair.getPublic();
+            ECPrivateKeyParameters privateKey = (ECPrivateKeyParameters) localKeyPair.getPrivate();
+
+            AsymmetricCipherKeyPair serverKeyPair = SM2Util.createAsymmetricCipherKeyPair();
+            ECPublicKeyParameters publicKey2 = (ECPublicKeyParameters) serverKeyPair.getPublic();
+            ECPrivateKeyParameters privateKey2 = (ECPrivateKeyParameters) serverKeyPair.getPrivate();
+
+
+            // 本地私钥 + 服务端公钥
+            String key = ECDHUtil.asymmetricCipherKeyPairECDH(privateKey,HexUtil.encodeHex(publicKey2.getQ().getEncoded(false)));
+            // 本地公钥 + 服务端私钥: 模拟服务端协商结果
+            String key2 = ECDHUtil.asymmetricCipherKeyPairECDH(privateKey2,HexUtil.encodeHex(publicKey.getQ().getEncoded(false)));
+
+
+            System.out.println("ECHD = " + key);
+            System.out.println("ECHD2 = " + key2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }

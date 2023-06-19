@@ -11,10 +11,8 @@ import org.bouncycastle.crypto.params.ECPublicKeyParameters;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.math.ec.ECCurve;
 import org.bouncycastle.math.ec.ECPoint;
-import org.bouncycastle.util.encoders.Base64;
 
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -119,6 +117,11 @@ public class SM2Util {
     }
 
 
+    /**
+     * 获取私钥对象
+     * @param privateKeyString: Hex 编码的字符串, 表示一个 bigint
+     * @return 私钥对象
+     */
     public static ECPrivateKeyParameters getPrivateKey(String privateKeyString) {
         X9ECParameters sm2ECParameters = GMNamedCurves.getByName("sm2p256v1");
         ECDomainParameters domainParameters = new ECDomainParameters(sm2ECParameters);
