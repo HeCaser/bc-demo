@@ -11,7 +11,7 @@ import java.security.PublicKey;
 public class Demo {
 
     public static void main(String[] args) {
-        keyPairDemo();
+//        keyPairDemo();
         AsymmetricCipherKeyPairDemo();
     }
 
@@ -31,10 +31,9 @@ public class Demo {
         ECPublicKeyParameters publicKey = (ECPublicKeyParameters) keyPair.getPublic();
         ECPrivateKeyParameters privateKey = (ECPrivateKeyParameters) keyPair.getPrivate();
 
-
-        System.out.println("hepan 公钥 Hex 压缩 " + HexUtil.encodeHex(publicKey.getQ().getEncoded(true)));
-        System.out.println("hepan 公钥 Hex 非压缩 " + HexUtil.encodeHex(publicKey.getQ().getEncoded(false)));
-        System.out.println("hepan 私钥 bigint " + privateKey.getD());
-        System.out.println("hepan 私钥 16 进制 " + privateKey.getD().toString(16));
+        System.out.println("公钥 Hex 压缩 " + HexUtil.encodeHex(publicKey.getQ().getEncoded(true)));
+        System.out.println("公钥 Hex 非压缩 " + HexUtil.encodeHex(publicKey.getQ().getEncoded(false)));
+        System.out.println("私钥 bigint " + privateKey.getD());
+        System.out.println("私钥 16 进制 " + privateKey.getD().toString(16));
     }
 }
