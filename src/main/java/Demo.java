@@ -11,25 +11,21 @@ import java.security.PublicKey;
 public class Demo {
 
     public static void main(String[] args) {
-        KeyPair kp = SM2Util.createKeyPair();
+        keyPairDemo();
+        AsymmetricCipherKeyPairDemo();
+    }
 
+    private static void keyPairDemo() {
+        KeyPair kp = SM2Util.createKeyPair();
         PublicKey publicKey = kp.getPublic();
         PrivateKey privateKey = kp.getPrivate();
-        System.out.println("hepan 公钥格式 " + publicKey.getFormat());
-        System.out.println("hepan 公钥 Hex " + HexUtil.encodeHex(publicKey.getEncoded()));
-        System.out.println("hepan 私钥格式 " + privateKey.getFormat());
-        System.out.println("hepan 私钥 Hex " + HexUtil.encodeHex(privateKey.getEncoded()));
-
-        asym();
-
-
+        System.out.println("公钥格式 " + publicKey.getFormat());
+        System.out.println("公钥 Hex " + HexUtil.encodeHex(publicKey.getEncoded()));
+        System.out.println("私钥格式 " + privateKey.getFormat());
+        System.out.println("私钥 Hex " + HexUtil.encodeHex(privateKey.getEncoded()));
     }
 
-
-    private static void keyPairDemo(){
-
-    }
-    private static void asym() {
+    private static void AsymmetricCipherKeyPairDemo() {
         AsymmetricCipherKeyPair keyPair = SM2Util.createAsymmetricCipherKeyPair();
         // 获取公钥和私钥
         ECPublicKeyParameters publicKey = (ECPublicKeyParameters) keyPair.getPublic();

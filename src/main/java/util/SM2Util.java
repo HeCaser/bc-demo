@@ -24,7 +24,8 @@ public class SM2Util {
 
 
     /**
-     * @return
+     * 生成 sm2 秘钥对
+     * KeyPair 模式
      */
     public static KeyPair createKeyPair() {
         try {
@@ -38,6 +39,10 @@ public class SM2Util {
         }
     }
 
+    /**
+     * 生成 sm2 秘钥对
+     * AsymmetricCipherKeyPair 模式
+     */
     public static AsymmetricCipherKeyPair createAsymmetricCipherKeyPair() {
         //获取一条SM2曲线参数
         X9ECParameters sm2ECParameters = GMNamedCurves.getByName("sm2p256v1");
@@ -50,6 +55,7 @@ public class SM2Util {
         AsymmetricCipherKeyPair keyPair = generator.generateKeyPair();
         return keyPair;
     }
+
 
 
 
