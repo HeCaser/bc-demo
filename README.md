@@ -2,6 +2,8 @@
 
 [bc 包仓库](https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on)
 
+[参考: hyperchain sm 部分](https://github.com/hyperchain/javasdk/blob/master/src/main/java/cn/hyperchain/sdk/crypto/sm/sm4/SM4Util.java)
+
 ## 环境/配置
 
 IntelliJ IDEA 2021.3.3 (Community Edition)

@@ -4,7 +4,9 @@ import org.bouncycastle.crypto.params.ECPublicKeyParameters;
 import util.ECDHUtil;
 import util.HexUtil;
 import util.SM2Util;
+import util.SM4Util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -17,7 +19,8 @@ public class Demo {
 //        keyPairChangeDemo();
 //        AsymmetricCipherKeyPairChangeDemo();
 //        KeyPairECDHDemo();
-        AsymmetricCipherKeyPairECDHDemo();
+//        AsymmetricCipherKeyPairECDHDemo();
+        sm4Demo();
     }
 
 
@@ -121,6 +124,20 @@ public class Demo {
         }
     }
 
+
+    private static void  sm4Demo(){
+        try {
+        byte[] data = "weojadfapdfja打发发达打发weojadfapdfja打发发达打发weojadfapdfja打发发达打发weojadfapdfja打发发达打发weojadfapdfja打发发达打发weojadfapdfja打发发达打发".getBytes(StandardCharsets.UTF_8);
+        byte[] key = new byte[16];
+
+           byte[] r1 = SM4Util.internalDo(key,data,true);
+           byte[] r2 = SM4Util.enc(key,data,true);
+            System.out.println("hex 1 "+HexUtil.encodeHex(r1));
+            System.out.println("hex 2 "+HexUtil.encodeHex(r2));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
