@@ -19,8 +19,8 @@ public class Demo {
 //        keyPairChangeDemo();
 //        AsymmetricCipherKeyPairChangeDemo();
 //        KeyPairECDHDemo();
-        AsymmetricCipherKeyPairECDHDemo();
-//        sm4Demo();
+//        AsymmetricCipherKeyPairECDHDemo();
+        sm4Demo();
     }
 
 
@@ -100,7 +100,7 @@ public class Demo {
         }
     }
 
-    private static void  AsymmetricCipherKeyPairECDHDemo() {
+    private static void AsymmetricCipherKeyPairECDHDemo() {
         try {
             AsymmetricCipherKeyPair localKeyPair = SM2Util.createAsymmetricCipherKeyPair();
             ECPublicKeyParameters publicKey = (ECPublicKeyParameters) localKeyPair.getPublic();
@@ -112,9 +112,9 @@ public class Demo {
 
 
             // 本地私钥 + 服务端公钥
-            String key = ECDHUtil.asymmetricCipherKeyPairECDH(privateKey,HexUtil.encodeHex(publicKey2.getQ().getEncoded(false)));
+            String key = ECDHUtil.asymmetricCipherKeyPairECDH(privateKey, HexUtil.encodeHex(publicKey2.getQ().getEncoded(false)));
             // 本地公钥 + 服务端私钥: 模拟服务端协商结果
-            String key2 = ECDHUtil.asymmetricCipherKeyPairECDH(privateKey2,HexUtil.encodeHex(publicKey.getQ().getEncoded(false)));
+            String key2 = ECDHUtil.asymmetricCipherKeyPairECDH(privateKey2, HexUtil.encodeHex(publicKey.getQ().getEncoded(false)));
 
 
             System.out.println("ECHD = " + key.length());
@@ -126,15 +126,47 @@ public class Demo {
     }
 
 
-    private static void  sm4Demo(){
+    private static void sm4Demo() {
         try {
-        byte[] data = "weojadfapdfja打发发达打发weojadfapdfja打发发达打发weojadfapdfja打发发达打发weojadfapdfja打发发达打发weojadfapdfja打发发达打发weojadfapdfja打发发达打发".getBytes(StandardCharsets.UTF_8);
-        byte[] key = new byte[16];
+            String data = "{\n" +
+                    "    \"access_token\": \"220010000057752c67c313b05cf7d71204fa4444c8ca54d0b\",\n" +
+                    "    \"refresh_token\": \"220010000c42ca6fb5dc264c86d808a5082624b7823bdac3d\",\n" +
+                    "    \"expiration\": 1.703472656542E12,\n" +
+                    "    \"created_at\": 1.687920656543E12,\n" +
+                    "    \"uid\": 198366486,\n" +
+                    "    \"scope\": \"all\",\n" +
+                    "    \"if_first\": false\n" +
+                    "}";
 
-           byte[] r1 = SM4Util.internalDo(key,data,true);
-           byte[] r2 = SM4Util.enc(key,data,true);
-            System.out.println("hex 1 "+HexUtil.encodeHex(r1));
-            System.out.println("hex 2 "+HexUtil.encodeHex(r2));
+            data ="[\n" +
+                    "    {\n" +
+                    "        \"access_token\": \"220010000057752c67c313b05cf7d71204fa4444c8ca54d0b\",\n" +
+                    "        \"refresh_token\": \"220010000c42ca6fb5dc264c86d808a5082624b7823bdac3d\",\n" +
+                    "        \"expiration\": 1.703472656542E12,\n" +
+                    "        \"created_at\": 1.687920656543E12,\n" +
+                    "        \"uid\": 198366486,\n" +
+                    "        \"scope\": \"all\",\n" +
+                    "        \"if_first\": false\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "        \"access_token\": \"220010000057752c67c313b05cf7d71204fa4444c8ca54d0b\",\n" +
+                    "        \"refresh_token\": \"220010000c42ca6fb5dc264c86d808a5082624b7823bdac3d\",\n" +
+                    "        \"expiration\": 1.703472656542E12,\n" +
+                    "        \"created_at\": 1.687920656543E12,\n" +
+                    "        \"uid\": 198366486,\n" +
+                    "        \"scope\": \"all\",\n" +
+                    "        \"if_first\": false\n" +
+                    "    }\n" +
+                    "]";
+
+//            data = "\"adfa\"";
+
+            byte[] dataByte = data.getBytes(StandardCharsets.UTF_8);
+            byte[] key = new byte[16];
+
+            byte[] cipherByte = SM4Util.internalDo(key, dataByte, true);
+            byte[] plainByte = SM4Util.internalDo(key, cipherByte, false);
+            System.out.println("解密后 = "+new String(plainByte));
         } catch (Exception e) {
             e.printStackTrace();
         }
