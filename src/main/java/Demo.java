@@ -19,8 +19,8 @@ public class Demo {
 //        keyPairChangeDemo();
 //        AsymmetricCipherKeyPairChangeDemo();
 //        KeyPairECDHDemo();
-//        AsymmetricCipherKeyPairECDHDemo();
-        sm4Demo();
+        AsymmetricCipherKeyPairECDHDemo();
+//        sm4Demo();
     }
 
 
@@ -117,8 +117,9 @@ public class Demo {
             String key2 = ECDHUtil.asymmetricCipherKeyPairECDH(privateKey2,HexUtil.encodeHex(publicKey.getQ().getEncoded(false)));
 
 
+            System.out.println("ECHD = " + key.length());
             System.out.println("ECHD = " + key);
-            System.out.println("ECHD2 = " + key2);
+            System.out.println("ECHD2 = " + key2.length());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -78,6 +78,9 @@ KeyPair 的公私钥对象, 基本信息举例(Hex 编码后输出):
 
 [AsymmetricCipherKeyPairECDHDemo](src/main/java/Demo.java)
 
+**ECDH** 补充
+
+Java 做 ECDH 后得到一个 BigInteger, 当调用 bigInteger.toByteArray() 时,如果此时 bigInteger 最高位 bit = 1 , 转换的 byte[] 会自动补位 0
 
 # 待办
 
