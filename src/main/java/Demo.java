@@ -14,7 +14,7 @@ import java.security.PublicKey;
 public class Demo {
 
     public static void main(String[] args) {
-//        keyPairDemo();
+        keyPairDemo();
 //        AsymmetricCipherKeyPairDemo();
 //        keyPairChangeDemo();
 //        AsymmetricCipherKeyPairChangeDemo();
@@ -28,9 +28,9 @@ public class Demo {
         KeyPair kp = SM2Util.createKeyPair();
         PublicKey publicKey = kp.getPublic();
         PrivateKey privateKey = kp.getPrivate();
-        System.out.println("公钥格式 " + publicKey.getFormat());
+        System.out.println("公钥格式 " + publicKey.getFormat()); // X.509
         System.out.println("公钥 Hex " + HexUtil.encodeHex(publicKey.getEncoded()));
-        System.out.println("私钥格式 " + privateKey.getFormat());
+        System.out.println("私钥格式 " + privateKey.getFormat()); // PKCS#8
         System.out.println("私钥 Hex " + HexUtil.encodeHex(privateKey.getEncoded()));
     }
 
